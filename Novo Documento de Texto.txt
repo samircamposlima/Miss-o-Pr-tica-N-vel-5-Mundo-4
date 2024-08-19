@@ -1,0 +1,23 @@
+HostName=Fullstack.azure-devices.net;DeviceId=Fullstack_dispositivo;SharedAccessKey=6Ss1KVrgBPjsiXfcrLcDI7V2JQx6tQHT4AIoTBkbHEs=
+
+az iot hub consumer-group create --hub-name Fullstack --name consumidor-Fullstack
+
+az iot hub show-connection-string --hub-name Fullstack --policy-name service
+
+set IotHubConnectionString=HostName=Fullstack.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=WG7EO2CZSWsETeh1IonryWlLyOqa6Z0Y8AIoTBDYc78=
+
+set EventHubConsumerGroup=consumidor-Fullstack
+
+az appservice plan create --name app-fullstack --resource-group Ubunto_group --sku FREE
+
+az webapp create -n App-IoT -g Ubunto_group -p app-fullstack --runtime "NODE:16LTS" --deployment-source-url https://github.com/Azure-Samples/web-apps-node-iot-hub-data-visualization
+
+az webapp config appsettings set -n App-IoT -g Ubunto_group --settings EventHubConsumerGroup=Consumidor-FullStack IotHubConnectionString=Fullstack.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=WG7EO2CZSWsETeh1IonryWlLyOqa6Z0Y8AIoTBDYc78=
+
+az webapp config set -n App-IoT -g Ubunto_group --web-sockets-enabled true
+
+az webapp update -n App-IoT -g Ubunto_group --https-only true
+
+az webapp show -n App-IoT -g Ubunto_group --query state
+
+https://App-IoT.azurewebsites.net
